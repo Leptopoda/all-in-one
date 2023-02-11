@@ -6,9 +6,10 @@ COPY --from=nats:2.9.14-scratch /nats-server.conf /etc/nats/nats.conf
 COPY --from=strukturag/nextcloud-spreed-signaling:1.0.0 /usr/bin/nextcloud-spreed-signaling /usr/local/bin/signaling
 
 USER root
-RUN apk add --no-cache ca-certificates wget tzdata bash shadow \
+RUN apk add --no-cache ca-certificates tzdata bash \
                        openssl supervisor netcat-openbsd; \
     apk add --no-cache janus-gateway --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing; \
+    apk add --no-cache shadow; \
     useradd --system talk; \
     apk del --no-cache shadow;
 
