@@ -26,7 +26,7 @@ RUN cp /etc/janus/janus.jcfg.sample /etc/janus/janus.jcfg; \
 RUN wget https://raw.githubusercontent.com/rxi/json.lua/master/json.lua -O /usr/share/janus/lua/json.lua; \
     wget https://raw.githubusercontent.com/kikito/ansicolors.lua/master/ansicolors.lua -O /usr/share/janus/lua/ansicolors.lua
 
-RUN mkdir -vp /etc/nats \
+RUN mkdir -p /etc/nats \
               /var/tmp \
               /var/lib/turn \
               /etc/signaling \
