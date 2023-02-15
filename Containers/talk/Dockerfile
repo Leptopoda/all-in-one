@@ -7,7 +7,11 @@ COPY --from=strukturag/nextcloud-spreed-signaling:1.0.0 /usr/bin/nextcloud-spree
 
 USER root
 RUN apk add --no-cache ca-certificates tzdata bash \
-                       openssl supervisor netcat-openbsd coturn; \
+                       coturn \
+                       openssl \
+                       supervisor \
+                       netcat-openbsd \
+                       libc6-compat libstdc++; \
     apk add --no-cache janus-gateway --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing; \
     apk add --no-cache shadow; \
     useradd --system talk; \
@@ -18,9 +22,7 @@ RUN echo "root:$(openssl rand -base64 12)" | chpasswd
 
 COPY --chmod=775 start.sh /usr/bin/
 COPY --chmod=664 supervisord.conf /
-RUN cp /etc/janus/janus.jcfg.sample /etc/janus/janus.jcfg; \
-    cp /etc/janus/janus.transport.websockets.jcfg.sample /etc/janus/janus.transport.websockets.jcfg; \
-    cp /etc/janus/janus.transport.mqtt.jcfg.sample /etc/janus/janus.transport.mqtt.jcfg; \
+RUN for sampleconf in /etc/janus/*.sample; do mv "$sampleconf" "$(echo $sampleconf | sed "s|.sample||g")"; done; \
     touch /etc/turnserver.conf;
 
 RUN wget https://raw.githubusercontent.com/rxi/json.lua/master/json.lua -O /usr/share/janus/lua/json.lua; \
