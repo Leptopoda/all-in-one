@@ -1,4 +1,4 @@
-FROM coturn/coturn:4.6.1-r1-alpine
+FROM alpine:3.17.2
 
 COPY --from=nats:2.9.14-scratch /nats-server /usr/local/bin/nats-server
 COPY --from=nats:2.9.14-scratch /nats-server.conf /etc/nats/nats.conf
@@ -7,7 +7,7 @@ COPY --from=strukturag/nextcloud-spreed-signaling:1.0.0 /usr/bin/nextcloud-spree
 
 USER root
 RUN apk add --no-cache ca-certificates tzdata bash \
-                       openssl supervisor netcat-openbsd; \
+                       openssl supervisor netcat-openbsd coturn; \
     apk add --no-cache janus-gateway --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing; \
     apk add --no-cache shadow; \
     useradd --system talk; \
@@ -27,11 +27,11 @@ RUN wget https://raw.githubusercontent.com/rxi/json.lua/master/json.lua -O /usr/
     wget https://raw.githubusercontent.com/kikito/ansicolors.lua/master/ansicolors.lua -O /usr/share/janus/lua/ansicolors.lua
 
 RUN mkdir -p /etc/nats \
-              /var/tmp \
-              /var/lib/turn \
-              /etc/signaling \
-              /var/log/supervisord \
-              /var/run/supervisord; \
+             /var/tmp \
+             /var/lib/turn \
+             /etc/signaling \
+             /var/log/supervisord \
+             /var/run/supervisord; \
     chown talk:talk -R /etc \
                        /usr \
                        /var/lib/turn \
