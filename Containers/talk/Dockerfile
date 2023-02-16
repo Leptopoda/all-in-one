@@ -11,7 +11,7 @@ RUN apk add --no-cache ca-certificates tzdata bash \
                        openssl \
                        supervisor \
                        netcat-openbsd \
-                       libc6-compat libstdc++; \
+                       libc6-compat; \
     apk add --no-cache janus-gateway --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing; \
     apk add --no-cache shadow; \
     useradd --system talk; \
